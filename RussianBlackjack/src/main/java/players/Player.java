@@ -1,17 +1,14 @@
 package players;
 
 import cards.Card;
-import cards.GammaDetector;
 import java.util.ArrayList;
 
 public class Player {
 
     private ArrayList<Card> cards;
-    private final GammaDetector gammaDetector;
 
     public Player() {
         cards = new ArrayList<>();
-        gammaDetector = new GammaDetector();
     }
 
     public ArrayList<Card> getCards() {
@@ -34,15 +31,4 @@ public class Player {
         cards.add(card);
     }
 
-    public String detect(Card card) {
-        return gammaDetector.detect(card);
-    }
-
-    public String getRecommendation(Card card) {
-        String recommendation = "Берите карту";
-        if (gammaDetector.checkValue(card) + countPoints() > 21) {
-            recommendation = "Не берите карту";
-        }
-        return recommendation;
-    }
 }

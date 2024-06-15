@@ -1,16 +1,21 @@
 package players;
 
+import cards.Card;
+import cards.GammaDetector;
+
 public class User extends Player {
 
     private int victories;
     private int defeats;
     private int money;
+    private final GammaDetector gammaDetector;
 
     public User(int victories, int defeats, int money) {
         super();
         this.victories = victories;
         this.defeats = defeats;
         this.money = money;
+        gammaDetector = new GammaDetector();
     }
 
     public int getVictories() {
@@ -37,4 +42,15 @@ public class User extends Player {
         this.money = money;
     }
 
+    public String detect(Card card) {
+        return gammaDetector.detect(card);
+    }
+
+    public String getRecommendation(Card card) {
+        String recommendation = "Берите карту";
+        if (gammaDetector.checkValue(card) + countPoints() > 21) {
+            recommendation = "Не берите карту";
+        }
+        return recommendation;
+    }
 }
