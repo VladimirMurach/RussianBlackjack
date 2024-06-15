@@ -37,4 +37,12 @@ public class Player {
     public String detect(Card card) {
         return gammaDetector.detect(card);
     }
+
+    public String getRecommendation(Card card) {
+        String recommendation = "Берите карту";
+        if (gammaDetector.checkValue(card) + countPoints() > 21) {
+            recommendation = "Не берите карту";
+        }
+        return recommendation;
+    }
 }
