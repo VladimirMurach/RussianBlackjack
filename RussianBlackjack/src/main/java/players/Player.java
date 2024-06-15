@@ -15,4 +15,19 @@ public class Player {
         return cards;
     }
 
+    public void setCards(ArrayList<Card> cards) {
+        this.cards = cards;
+    }
+
+    public int countPoints() {
+        int points = 0;
+        for (Card card : cards) {
+            points += card.getValue();
+        }
+        return points;
+    }
+
+    public void takeCard(Card card) {
+        cards.add(card);
+    }
 }
