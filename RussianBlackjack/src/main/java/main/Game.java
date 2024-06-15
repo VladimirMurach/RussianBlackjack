@@ -22,7 +22,7 @@ public class Game {
         
     }
     
-    public void setDeck() {
+    public void changeDeck() {
         
     }
     
