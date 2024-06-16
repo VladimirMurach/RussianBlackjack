@@ -26,6 +26,7 @@ public class Game {
         writer = new XlsxWriter();
         deck = new ArrayList<>();
         user = new User(0, 0, 100);
+        readUser();
         readIsotopes();
         setDeck();
         readDeck();
@@ -38,8 +39,6 @@ public class Game {
     public ArrayList<Card> getDeck() {
         return deck;
     }
-    
-    
 
     public void readIsotopes() {
         isotopes = reader.readIsotopes();
@@ -66,7 +65,7 @@ public class Game {
     public void readDeck() {
         deck = reader.readDeck(isotopes, deck);
     }
-    
+
     public void saveDeck() {
         writer.writeDeck(deck);
     }
@@ -94,4 +93,15 @@ public class Game {
         moneyLabel.setText("Деньги: " + Integer.toString(user.getMoney()));
     }
 
+    public void readUser() {
+        int[] userInfo = reader.readUser();
+        user.setVictories(userInfo[0]);
+        user.setDefeats(userInfo[1]);
+        user.setMoney(userInfo[2]);
+    }
+
+    public void saveUserInfo() {
+        int[] userInfo = {user.getVictories(), user.getDefeats(), user.getMoney()};
+        writer.writeUserInfo(userInfo);
+    }
 }

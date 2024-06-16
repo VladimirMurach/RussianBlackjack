@@ -35,4 +35,28 @@ public class XlsxWriter {
             }
         }
     }
+    
+    public void writeUserInfo(int[] userInfo) {
+        Workbook workbook = new XSSFWorkbook();
+        Sheet sheet = workbook.createSheet("Лист1");
+        Row row = sheet.createRow(0);
+        for (int i = 0; i < 3; i++) {
+            row.createCell(i).setCellValue(Integer.toString(userInfo[i]));
+        }
+        FileOutputStream fos;
+        try {
+            fos = new FileOutputStream("user.xlsx");
+            workbook.write(fos);
+        } catch (FileNotFoundException ex) {
+
+        } catch (IOException ex) {
+
+        } finally {
+            try {
+                workbook.close();
+            } catch (IOException ex) {
+
+            }
+        }
+    }
 }

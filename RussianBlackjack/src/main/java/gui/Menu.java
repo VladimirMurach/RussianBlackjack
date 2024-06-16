@@ -123,6 +123,7 @@ public class Menu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void exitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitButtonActionPerformed
+        game.saveUserInfo();
         System.exit(0);
     }//GEN-LAST:event_exitButtonActionPerformed
 

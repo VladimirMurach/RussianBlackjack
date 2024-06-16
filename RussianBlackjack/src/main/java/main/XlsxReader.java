@@ -36,7 +36,7 @@ public class XlsxReader {
         }
         return deck;
     }
-    
+
     public ArrayList<Isotope> readIsotopes() {
         Workbook workbook = null;
         ArrayList<Isotope> isotopes = new ArrayList<>();
@@ -48,7 +48,7 @@ public class XlsxReader {
                 String name = row.getCell(0).getStringCellValue();
                 double halfLife = row.getCell(1).getNumericCellValue();
                 double energy = row.getCell(2).getNumericCellValue();
-                isotopes.add(new Isotope(name, halfLife, energy, i-1));
+                isotopes.add(new Isotope(name, halfLife, energy, i - 1));
             }
         } catch (IOException e) {
 
@@ -60,5 +60,27 @@ public class XlsxReader {
             }
         }
         return isotopes;
+    }
+
+    public int[] readUser() {
+        int[] userInfo = new int[3];
+        Workbook workbook = null;
+        try {
+            workbook = new XSSFWorkbook("user.xlsx");
+            Sheet sheet = workbook.getSheetAt(0);
+            Row row = sheet.getRow(0);
+            for (int i = 0; i < 3; i++) {
+                userInfo[i] = Integer.parseInt(row.getCell(i).getStringCellValue());
+            }
+        } catch (IOException e) {
+
+        } finally {
+            try {
+                workbook.close();
+            } catch (IOException e) {
+
+            }
+        }
+        return userInfo;
     }
 }
