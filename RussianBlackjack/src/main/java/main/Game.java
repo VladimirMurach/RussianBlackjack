@@ -4,6 +4,7 @@ import cards.Card;
 import cards.Isotope;
 import gui.ChangeDeckForm;
 import java.util.ArrayList;
+import javax.swing.JLabel;
 import players.Banker;
 import players.Opponent;
 import players.Player;
@@ -24,6 +25,7 @@ public class Game {
         reader = new XlsxReader();
         writer = new XlsxWriter();
         deck = new ArrayList<>();
+        user = new User(0, 0, 100);
         readIsotopes();
         setDeck();
         readDeck();
@@ -84,6 +86,12 @@ public class Game {
 
     public User getUser() {
         return user;
+    }
+
+    public void setUserInfo(JLabel victoriesLabel, JLabel defeatsLabel, JLabel moneyLabel) {
+        victoriesLabel.setText("Победы: " + Integer.toString(user.getVictories()));
+        defeatsLabel.setText("Поражения: " + Integer.toString(user.getDefeats()));
+        moneyLabel.setText("Деньги: " + Integer.toString(user.getMoney()));
     }
 
 }

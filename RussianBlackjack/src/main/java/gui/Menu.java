@@ -17,6 +17,7 @@ public class Menu extends javax.swing.JFrame {
     public Menu() {
         initComponents();
         game = new Game();
+        setUserInfo();
     }
 
     /**
@@ -173,4 +174,8 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JLabel titleLabel;
     private javax.swing.JLabel victoriesLabel;
     // End of variables declaration//GEN-END:variables
+
+    private void setUserInfo() {
+        game.setUserInfo(victoriesLabel, defeatsLabel, moneyLabel);
+    }
 }
