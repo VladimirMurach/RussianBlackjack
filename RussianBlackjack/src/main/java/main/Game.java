@@ -79,8 +79,11 @@ public class Game {
         changeDeckForm.setVisible(true);
     }
 
-    public void setOpponents() {
-
+    public void setOpponents(int number) {
+        opponents = new ArrayList<>();
+        for (int i = 0; i < number; i++) {
+            opponents.add(new Opponent());
+        }
     }
 
     public User getUser() {
