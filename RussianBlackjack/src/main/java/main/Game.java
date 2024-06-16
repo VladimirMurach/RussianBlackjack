@@ -2,6 +2,7 @@ package main;
 
 import cards.Card;
 import cards.Isotope;
+import gui.ChangeDeckForm;
 import java.util.ArrayList;
 import players.Banker;
 import players.Opponent;
@@ -15,16 +16,28 @@ public class Game {
     private ArrayList<Opponent> opponents;
     private ArrayList<Player> players;
     private XlsxReader reader;
+    private XlsxWriter writer;
     private ArrayList<Isotope> isotopes;
     private ArrayList<Card> deck;
 
     public Game() {
         reader = new XlsxReader();
+        writer = new XlsxWriter();
         deck = new ArrayList<>();
         readIsotopes();
         setDeck();
         readDeck();
     }
+
+    public ArrayList<Isotope> getIsotopes() {
+        return isotopes;
+    }
+
+    public ArrayList<Card> getDeck() {
+        return deck;
+    }
+    
+    
 
     public void readIsotopes() {
         isotopes = reader.readIsotopes();
@@ -51,13 +64,18 @@ public class Game {
     public void readDeck() {
         deck = reader.readDeck(isotopes, deck);
     }
+    
+    public void saveDeck() {
+        writer.writeDeck(deck);
+    }
 
     public void start() {
 
     }
 
     public void changeDeck() {
-
+        ChangeDeckForm changeDeckForm = new ChangeDeckForm(this, isotopes, deck);
+        changeDeckForm.setVisible(true);
     }
 
     public void setOpponents() {

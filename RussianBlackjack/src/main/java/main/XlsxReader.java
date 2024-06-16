@@ -22,7 +22,6 @@ public class XlsxReader {
                 Isotope isotope = isotopes.get(Integer.parseInt(row.getCell(0).getStringCellValue()));
                 for (int i = j; i < 4 + j; i++) {
                     deck.get(i).setIsotope(isotope);
-                    System.out.println(deck.get(i).getIsotope().getName());
                 }
                 j += 4;
             }
@@ -49,7 +48,7 @@ public class XlsxReader {
                 String name = row.getCell(0).getStringCellValue();
                 double halfLife = row.getCell(1).getNumericCellValue();
                 double energy = row.getCell(2).getNumericCellValue();
-                isotopes.add(new Isotope(name, halfLife, energy));
+                isotopes.add(new Isotope(name, halfLife, energy, i-1));
             }
         } catch (IOException e) {
 
