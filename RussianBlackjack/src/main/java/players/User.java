@@ -57,7 +57,7 @@ public class User extends Player {
     
     @Override
     public boolean decide(Card card) {
-        //takeCard(new Card("", 22, null));
+        takeCard(new Card("", 20, null));
         return false;
     }
 }

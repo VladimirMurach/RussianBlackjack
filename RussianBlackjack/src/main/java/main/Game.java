@@ -85,6 +85,7 @@ public class Game {
     public void startRound() {
         gameOver = false;
         setPlayers();
+        int n = players.size();
         banker.setDeck(new ArrayList<>(deck));
         banker.shuffleDeck();
         Collections.shuffle(players);
@@ -95,8 +96,8 @@ public class Game {
                 gameOver = true;
                 System.out.println(player.getName() + " набрал 21 очко и победил!");
                 if (player.equals(user)) {
-                    user.setVictories(user.getVictories()+ 1);
-                    user.setMoney(user.getMoney() + 10);
+                    user.setVictories(user.getVictories() + 1);
+                    user.setMoney(user.getMoney() + 10 * n);
                     startWindow.getResultLabel().setText("Вы победили!");
                 } else {
                     user.setDefeats(user.getDefeats() + 1);
@@ -120,8 +121,43 @@ public class Game {
             }
         }
         if (!gameOver) {
+            ArrayList<Player> lastPlayers = new ArrayList<>();
+            for (Player player : players) {
+                if (!(player.isLose() | player.equals(user))) {
+                    lastPlayers.add(player);
+                }
+            }
             banker.play(banker);
+            System.out.println("Банкир: " + banker.countPoints());
+            for (Player player : lastPlayers) {
+                System.out.println(player.getName() + ": " + player.countPoints());
+            }
+            System.out.println("Пользователь: " + user.countPoints());
+            boolean userWin = true;
+            for (Player player : lastPlayers) {
+                if (user.countPoints() <= player.countPoints()) {
+                    userWin = false;
+                }
+            }
+            if (user.countPoints() <= banker.countPoints() & banker.countPoints() < 22) {
+                userWin = false;
+            }
+            if (userWin) {
+                user.setVictories(user.getVictories() + 1);
+                user.setMoney(user.getMoney() + 10 * n);
+                startWindow.getResultLabel().setText("Вы победили!");
+            } else {
+                user.setDefeats(user.getDefeats() + 1);
+                user.setMoney(user.getMoney() - 10);
+                startWindow.getResultLabel().setText("Вы проиграли!");
+            }
+            startWindow.setVisible(true);
         }
+        for (Opponent opponent : opponents) {
+            opponent.setCards(new ArrayList<>());
+        }
+        user.setCards(new ArrayList<>());
+        banker.setCards(new ArrayList<>());
     }
 
     public void setPlayers() {
