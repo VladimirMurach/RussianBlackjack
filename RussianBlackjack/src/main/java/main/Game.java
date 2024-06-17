@@ -3,6 +3,8 @@ package main;
 import cards.Card;
 import cards.Isotope;
 import gui.ChangeDeckForm;
+import gui.Menu;
+import gui.StartWindow;
 import java.util.ArrayList;
 import javax.swing.JLabel;
 import players.Banker;
@@ -20,12 +22,14 @@ public class Game {
     private XlsxWriter writer;
     private ArrayList<Isotope> isotopes;
     private ArrayList<Card> deck;
+    StartWindow startWindow;
 
-    public Game() {
+    public Game(Menu menu) {
         reader = new XlsxReader();
         writer = new XlsxWriter();
         deck = new ArrayList<>();
         user = new User(0, 0, 100);
+        startWindow = new StartWindow(menu, this);
         readUser();
         readIsotopes();
         setDeck();
@@ -71,7 +75,20 @@ public class Game {
     }
 
     public void start() {
-
+        startWindow.setVisible(true);
+    }
+    
+    public void startRound() {
+        setPlayers();
+        
+    }
+    
+    public void setPlayers() {
+        players = new ArrayList<>();
+        for (Opponent opponent : opponents) {
+            players.add(opponent);
+        }
+        players.add(user);
     }
 
     public void changeDeck() {

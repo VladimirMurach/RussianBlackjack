@@ -16,7 +16,7 @@ public class Menu extends javax.swing.JFrame {
     
     public Menu() {
         initComponents();
-        game = new Game();
+        game = new Game(this);
         setUserInfo();
         opponentsButtonGroup.add(zeroRadioButton);
         opponentsButtonGroup.add(oneRadioButton);
@@ -288,6 +288,7 @@ public class Menu extends javax.swing.JFrame {
             number = 4;
         }
         game.setOpponents(number);
+        game.start();
     }//GEN-LAST:event_confirmButtonActionPerformed
 
     /**
@@ -344,7 +345,7 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JRadioButton zeroRadioButton;
     // End of variables declaration//GEN-END:variables
 
-    private void setUserInfo() {
+    public void setUserInfo() {
         game.setUserInfo(victoriesLabel, defeatsLabel, moneyLabel);
     }
 }
