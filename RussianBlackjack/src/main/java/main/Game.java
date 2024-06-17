@@ -6,6 +6,7 @@ import gui.ChangeDeckForm;
 import gui.Menu;
 import gui.StartWindow;
 import java.util.ArrayList;
+import java.util.Collections;
 import javax.swing.JLabel;
 import players.Banker;
 import players.Opponent;
@@ -29,6 +30,7 @@ public class Game {
         writer = new XlsxWriter();
         deck = new ArrayList<>();
         user = new User(0, 0, 100);
+        banker = new Banker();
         startWindow = new StartWindow(menu, this);
         readUser();
         readIsotopes();
@@ -80,7 +82,23 @@ public class Game {
     
     public void startRound() {
         setPlayers();
-        
+        banker.setDeck(new ArrayList<>(deck));
+        banker.shuffleDeck();
+        Collections.shuffle(players);
+        int number = 1;
+        for (Player player : players) {
+            System.out.println("Ходит игрок " + number);
+            banker.play(player);
+            if (player.countPoints() == 21) {
+                System.out.println("Игрок " + number + " набрал 21 очко и победил!");
+                break;
+            }
+            if (player.countPoints() > 21) {
+                System.out.println("У игрока " + number + " перебор!");
+            }
+            number++;
+        }
+        banker.play(banker);
     }
     
     public void setPlayers() {

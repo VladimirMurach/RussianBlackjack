@@ -53,4 +53,10 @@ public class User extends Player {
         }
         return recommendation;
     }
+    
+    @Override
+    public boolean decide(Card card) {
+        System.out.println("это пользователь");
+        return false;
+    }
 }
