@@ -4,6 +4,8 @@
  */
 package gui;
 
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
 import main.Game;
 
 /**
@@ -32,6 +34,7 @@ public class StartWindow extends javax.swing.JFrame {
 
         startRoundButton = new javax.swing.JButton();
         backButton = new javax.swing.JButton();
+        resultLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -53,25 +56,32 @@ public class StartWindow extends javax.swing.JFrame {
             }
         });
 
+        resultLabel.setFont(new java.awt.Font("Bahnschrift", 0, 36)); // NOI18N
+        resultLabel.setText("Первый розыгрыш");
+        resultLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(106, 106, 106)
+                .addGap(121, 121, 121)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(resultLabel)
                     .addComponent(backButton)
                     .addComponent(startRoundButton))
-                .addContainerGap(104, Short.MAX_VALUE))
+                .addGap(45, 45, 45))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(91, Short.MAX_VALUE)
+                .addGap(65, 65, 65)
+                .addComponent(resultLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 65, Short.MAX_VALUE)
                 .addComponent(startRoundButton)
-                .addGap(70, 70, 70)
+                .addGap(43, 43, 43)
                 .addComponent(backButton)
-                .addGap(86, 86, 86))
+                .addGap(44, 44, 44))
         );
 
         pack();
@@ -83,8 +93,8 @@ public class StartWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_backButtonActionPerformed
 
     private void startRoundButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startRoundButtonActionPerformed
-        game.startRound();
         this.setVisible(false);
+        game.startRound();
     }//GEN-LAST:event_startRoundButtonActionPerformed
 
     /**
@@ -117,8 +127,13 @@ public class StartWindow extends javax.swing.JFrame {
 
     }
 
+    public JLabel getResultLabel() {
+        return resultLabel;
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton backButton;
+    private javax.swing.JLabel resultLabel;
     private javax.swing.JButton startRoundButton;
     // End of variables declaration//GEN-END:variables
 }

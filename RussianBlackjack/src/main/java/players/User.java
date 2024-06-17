@@ -16,6 +16,7 @@ public class User extends Player {
         this.defeats = defeats;
         this.money = money;
         gammaDetector = new GammaDetector();
+        name = "Пользователь";
     }
 
     public int getVictories() {
@@ -56,7 +57,7 @@ public class User extends Player {
     
     @Override
     public boolean decide(Card card) {
-        System.out.println("это пользователь");
+        //takeCard(new Card("", 22, null));
         return false;
     }
 }

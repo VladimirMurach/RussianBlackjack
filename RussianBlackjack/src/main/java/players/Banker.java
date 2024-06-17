@@ -7,6 +7,10 @@ import java.util.Collections;
 public class Banker extends Player {
 
     private ArrayList<Card> deck;
+    
+    public Banker() {
+        name = "Банкир";
+    }
 
     public ArrayList<Card> getDeck() {
         return deck;

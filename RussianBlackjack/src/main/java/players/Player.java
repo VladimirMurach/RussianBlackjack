@@ -8,11 +8,20 @@ public abstract class Player {
     private ArrayList<Card> cards;
     private boolean win;
     private boolean lose;
+    protected String name;
 
     public Player() {
         cards = new ArrayList<>();
         win = false;
         lose = false;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public boolean isWin() {
