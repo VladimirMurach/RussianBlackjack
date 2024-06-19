@@ -7,6 +7,7 @@ import gui.Menu;
 import gui.StartWindow;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import javax.swing.JLabel;
 import players.Banker;
 import players.Opponent;
@@ -30,7 +31,7 @@ public class Game {
         reader = new XlsxReader();
         writer = new XlsxWriter();
         deck = new ArrayList<>();
-        user = new User(0, 0, 100);
+        user = new User(0, 0, 100, this);
         banker = new Banker();
         startWindow = new StartWindow(menu, this);
         readUser();
@@ -85,79 +86,27 @@ public class Game {
     public void startRound() {
         gameOver = false;
         setPlayers();
-        int n = players.size();
         banker.setDeck(new ArrayList<>(deck));
         banker.shuffleDeck();
         Collections.shuffle(players);
-        for (Player player : players) {
-            System.out.println(player.getName() + " играет");
-            banker.play(player);
-            if (player.countPoints() == 21) {
-                gameOver = true;
-                System.out.println(player.getName() + " набрал 21 очко и победил!");
-                if (player.equals(user)) {
-                    user.setVictories(user.getVictories() + 1);
-                    user.setMoney(user.getMoney() + 10 * n);
-                    startWindow.getResultLabel().setText("Вы победили!");
-                } else {
-                    user.setDefeats(user.getDefeats() + 1);
-                    user.setMoney(user.getMoney() - 10);
-                    startWindow.getResultLabel().setText("Вы проиграли!");
-                }
-                startWindow.setVisible(true);
+        int i = 0;
+        while (!players.get(i).equals(user)) {
+            play(players.get(i));
+            if (gameOver) {
                 break;
             }
-            if (player.countPoints() > 21) {
-                player.setLose(true);
-                System.out.println("У игрока " + player.getName() + " перебор!");
-                if (player.equals(user)) {
-                    startWindow.getResultLabel().setText("Вы проиграли!");
-                    gameOver = true;
-                    user.setDefeats(user.getDefeats() + 1);
-                    user.setMoney(user.getMoney() - 10);
-                    startWindow.setVisible(true);
-                    break;
-                }
-            }
+            i++;
         }
-        if (!gameOver) {
-            ArrayList<Player> lastPlayers = new ArrayList<>();
-            for (Player player : players) {
-                if (!(player.isLose() | player.equals(user))) {
-                    lastPlayers.add(player);
-                }
+        if (gameOver) {
+            for (Opponent opponent : opponents) {
+                opponent.setCards(new ArrayList<>());
+                opponent.setLose(false);
             }
-            banker.play(banker);
-            System.out.println("Банкир: " + banker.countPoints());
-            for (Player player : lastPlayers) {
-                System.out.println(player.getName() + ": " + player.countPoints());
-            }
-            System.out.println("Пользователь: " + user.countPoints());
-            boolean userWin = true;
-            for (Player player : lastPlayers) {
-                if (user.countPoints() <= player.countPoints()) {
-                    userWin = false;
-                }
-            }
-            if (user.countPoints() <= banker.countPoints() & banker.countPoints() < 22) {
-                userWin = false;
-            }
-            if (userWin) {
-                user.setVictories(user.getVictories() + 1);
-                user.setMoney(user.getMoney() + 10 * n);
-                startWindow.getResultLabel().setText("Вы победили!");
-            } else {
-                user.setDefeats(user.getDefeats() + 1);
-                user.setMoney(user.getMoney() - 10);
-                startWindow.getResultLabel().setText("Вы проиграли!");
-            }
-            startWindow.setVisible(true);
+            user.setCards(new ArrayList<>());
+            banker.setCards(new ArrayList<>());
+        } else {
+            user.startGame(banker);
         }
-        for (Opponent opponent : opponents) {
-            opponent.setCards(new ArrayList<>());
-        }
-        user.setCards(new ArrayList<>());
-        banker.setCards(new ArrayList<>());
     }
 
     public void setPlayers() {
@@ -202,5 +151,95 @@ public class Game {
     public void saveUserInfo() {
         int[] userInfo = {user.getVictories(), user.getDefeats(), user.getMoney()};
         writer.writeUserInfo(userInfo);
+    }
+
+    public HashMap<String, Card> cardsPlayed() {
+        HashMap<String, Card> cardsPlayed = new HashMap<>();
+        for (Player player : players) {
+            if (player.equals(user)) {
+                break;
+            }
+            int number = 1;
+            for (Card card : player.getCards()) {
+                cardsPlayed.put(player.getName() + " Карта " + number, card);
+                number++;
+            }
+        }
+        return cardsPlayed;
+    }
+
+    public void play(Player player) {
+        System.out.println(player.getName() + " играет");
+        banker.play(player);
+        if (player.countPoints() == 21) {
+            gameOver = true;
+            System.out.println(player.getName() + " набрал 21 очко и победил!");
+            user.setDefeats(user.getDefeats() + 1);
+            user.setMoney(user.getMoney() - 10);
+            startWindow.getResultLabel().setText("Вы проиграли!");
+            startWindow.setVisible(true);
+        }
+        if (player.countPoints() > 21) {
+            player.setLose(true);
+            System.out.println("У игрока " + player.getName() + " перебор!");
+        }
+    }
+
+    public void checkWin() {
+        ArrayList<Player> lastPlayers = new ArrayList<>();
+        for (Player player : players) {
+            if (!(player.isLose() | player.equals(user))) {
+                lastPlayers.add(player);
+            }
+        }
+        banker.play(banker);
+        System.out.println("Банкир: " + banker.countPoints());
+        for (Player player : lastPlayers) {
+            System.out.println(player.getName() + ": " + player.countPoints());
+        }
+        System.out.println("Пользователь: " + user.countPoints());
+        boolean userWin = true;
+        for (Player player : lastPlayers) {
+            if (user.countPoints() <= player.countPoints()) {
+                userWin = false;
+            }
+        }
+        if (user.countPoints() <= banker.countPoints() & banker.countPoints() < 22) {
+            userWin = false;
+        }
+        if (userWin) {
+            user.setVictories(user.getVictories() + 1);
+            user.setMoney(user.getMoney() + 10 * players.size());
+            startWindow.getResultLabel().setText("Вы победили!");
+        } else {
+            user.setDefeats(user.getDefeats() + 1);
+            user.setMoney(user.getMoney() - 10);
+            startWindow.getResultLabel().setText("Вы проиграли!");
+        }
+        startWindow.setVisible(true);
+    }
+
+    public void endGame() {
+        int i = 0;
+        while (!players.get(i).equals(user)) {
+            i++;
+        }
+        i++;
+        while (i < players.size()) {
+            play(players.get(i));
+            if (gameOver) {
+                break;
+            }
+            i++;
+        }
+        if (!gameOver) {
+            checkWin();
+        }
+        for (Opponent opponent : opponents) {
+            opponent.setCards(new ArrayList<>());
+            opponent.setLose(false);
+        }
+        user.setCards(new ArrayList<>());
+        banker.setCards(new ArrayList<>());
     }
 }

@@ -2,6 +2,8 @@ package players;
 
 import cards.Card;
 import cards.GammaDetector;
+import gui.GameWindow;
+import main.Game;
 
 public class User extends Player {
 
@@ -9,14 +11,23 @@ public class User extends Player {
     private int defeats;
     private int money;
     private final GammaDetector gammaDetector;
+    private final GameWindow gameWindow;
+    private boolean decision;
+    private Game game;
 
-    public User(int victories, int defeats, int money) {
+    public User(int victories, int defeats, int money, Game game) {
         super();
         this.victories = victories;
         this.defeats = defeats;
         this.money = money;
         gammaDetector = new GammaDetector();
         name = "Пользователь";
+        gameWindow = new GameWindow(this);
+        this.game = game;
+    }
+
+    public GameWindow getGameWindow() {
+        return gameWindow;
     }
 
     public int getVictories() {
@@ -43,6 +54,10 @@ public class User extends Player {
         this.money = money;
     }
 
+    public void setDecision(boolean decision) {
+        this.decision = decision;
+    }
+
     public String detect(Card card) {
         return gammaDetector.detect(card);
     }
@@ -54,10 +69,23 @@ public class User extends Player {
         }
         return recommendation;
     }
-    
+
     @Override
     public boolean decide(Card card) {
-        takeCard(new Card("", 20, null));
-        return false;
+        if (cards.isEmpty()) {
+            takeCard(card);
+            gameWindow.getLastCardLabel().setText("Вы взяли карту - " + card.getName());
+            return true;
+        }
+        gameWindow.setMyCard(card);
+        gameWindow.setOtherCards(game.cardsPlayed());
+        gameWindow.setVisible(true);
+        return decision;
+    }
+    
+    public void startGame(Banker banker) {
+        takeCard(banker.dealCard());
+        System.out.println("Пользователь сыграл");
+        game.endGame();
     }
 }

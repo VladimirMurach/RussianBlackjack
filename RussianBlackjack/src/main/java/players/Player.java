@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public abstract class Player {
 
-    private ArrayList<Card> cards;
+    protected ArrayList<Card> cards;
     private boolean win;
     private boolean lose;
     protected String name;
