@@ -7,7 +7,7 @@ import gui.Menu;
 import gui.StartWindow;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.TreeMap;
 import javax.swing.JLabel;
 import players.Banker;
 import players.Opponent;
@@ -31,8 +31,8 @@ public class Game {
         reader = new XlsxReader();
         writer = new XlsxWriter();
         deck = new ArrayList<>();
-        user = new User(0, 0, 100, this);
         banker = new Banker();
+        user = new User(0, 0, 100, this, banker);
         startWindow = new StartWindow(menu, this);
         readUser();
         readIsotopes();
@@ -105,7 +105,7 @@ public class Game {
             user.setCards(new ArrayList<>());
             banker.setCards(new ArrayList<>());
         } else {
-            user.startGame(banker);
+            user.startGame();
         }
     }
 
@@ -153,8 +153,8 @@ public class Game {
         writer.writeUserInfo(userInfo);
     }
 
-    public HashMap<String, Card> cardsPlayed() {
-        HashMap<String, Card> cardsPlayed = new HashMap<>();
+    public TreeMap<String, Card> cardsPlayed() {
+        TreeMap<String, Card> cardsPlayed = new TreeMap<>();
         for (Player player : players) {
             if (player.equals(user)) {
                 break;
@@ -235,6 +235,29 @@ public class Game {
         if (!gameOver) {
             checkWin();
         }
+        for (Opponent opponent : opponents) {
+            opponent.setCards(new ArrayList<>());
+            opponent.setLose(false);
+        }
+        user.setCards(new ArrayList<>());
+        banker.setCards(new ArrayList<>());
+    }
+
+    public void winStartWindow() {
+        startWindow.getResultLabel().setText("Вы победили!");
+        startWindow.setVisible(true);
+    }
+
+    public int playersSize() {
+        return players.size();
+    }
+
+    public void loseStartWindow() {
+        startWindow.getResultLabel().setText("Вы проиграли!");
+        startWindow.setVisible(true);
+    }
+
+    public void clearCards() {
         for (Opponent opponent : opponents) {
             opponent.setCards(new ArrayList<>());
             opponent.setLose(false);

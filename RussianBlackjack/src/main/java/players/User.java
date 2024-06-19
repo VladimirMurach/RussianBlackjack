@@ -12,10 +12,10 @@ public class User extends Player {
     private int money;
     private final GammaDetector gammaDetector;
     private final GameWindow gameWindow;
-    private boolean decision;
     private Game game;
+    Banker banker;
 
-    public User(int victories, int defeats, int money, Game game) {
+    public User(int victories, int defeats, int money, Game game, Banker banker) {
         super();
         this.victories = victories;
         this.defeats = defeats;
@@ -24,6 +24,15 @@ public class User extends Player {
         name = "Пользователь";
         gameWindow = new GameWindow(this);
         this.game = game;
+        this.banker = banker;
+    }
+
+    public Banker getBanker() {
+        return banker;
+    }
+
+    public Game getGame() {
+        return game;
     }
 
     public GameWindow getGameWindow() {
@@ -54,10 +63,6 @@ public class User extends Player {
         this.money = money;
     }
 
-    public void setDecision(boolean decision) {
-        this.decision = decision;
-    }
-
     public String detect(Card card) {
         return gammaDetector.detect(card);
     }
@@ -72,20 +77,32 @@ public class User extends Player {
 
     @Override
     public boolean decide(Card card) {
-        if (cards.isEmpty()) {
-            takeCard(card);
-            gameWindow.getLastCardLabel().setText("Вы взяли карту - " + card.getName());
-            return true;
-        }
-        gameWindow.setMyCard(card);
-        gameWindow.setOtherCards(game.cardsPlayed());
-        gameWindow.setVisible(true);
-        return decision;
+        return true;
     }
     
-    public void startGame(Banker banker) {
-        takeCard(banker.dealCard());
-        System.out.println("Пользователь сыграл");
-        game.endGame();
+    public void startGame() {
+        Card firstCard = banker.dealCard();
+        takeCard(firstCard);
+        gameWindow.getLastCardLabel().setText("Вы взяли карту - " + firstCard.getName());
+        gameWindow.setMyCard(banker.dealCard());
+        gameWindow.setOtherCards(game.cardsPlayed());
+        gameWindow.createTable();
+        gameWindow.setVisible(true);
+    }
+    
+    public void setWinMoney() {
+        setMoney(getMoney() + 10 * game.playersSize());
+    }
+    
+    public void winStartWindow() {
+        game.winStartWindow();
+    }
+
+    public void loseStartWindow() {
+        game.loseStartWindow();
+    }
+
+    public void clearCards() {
+        game.clearCards();
     }
 }

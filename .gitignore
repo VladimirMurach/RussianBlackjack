@@ -23,3 +23,6 @@
 hs_err_pid*
 replay_pid*
 /RussianBlackjack/target/
+/RussianBlackjack/deck.xlsx
+/RussianBlackjack/user.xlsx
+/RussianBlackjack/isotopes.xlsx

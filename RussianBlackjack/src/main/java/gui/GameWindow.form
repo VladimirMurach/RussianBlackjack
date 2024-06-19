@@ -67,7 +67,7 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
-        <Component class="javax.swing.JTable" name="jTable1">
+        <Component class="javax.swing.JTable" name="otherCardsTable">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Bahnschrift" size="18" style="0"/>
@@ -77,6 +77,10 @@
                 <Column editable="true" title="&#x41a;&#x430;&#x440;&#x442;&#x430;" type="java.lang.String"/>
               </Table>
             </Property>
+            <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
+              <Color id="Default Cursor"/>
+            </Property>
+            <Property name="rowHeight" type="int" value="30"/>
           </Properties>
         </Component>
       </SubComponents>
@@ -116,6 +120,9 @@
         </Property>
         <Property name="text" type="java.lang.String" value="&#x412;&#x437;&#x44f;&#x442;&#x44c; &#x43a;&#x430;&#x440;&#x442;&#x443;"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="takeCardButtonActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="refuseButton">
       <Properties>
@@ -127,6 +134,9 @@
         </Property>
         <Property name="text" type="java.lang.String" value="&#x41e;&#x442;&#x43a;&#x430;&#x437;&#x430;&#x442;&#x44c;&#x441;&#x44f;"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="refuseButtonActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="lastCardLabel">
       <Properties>

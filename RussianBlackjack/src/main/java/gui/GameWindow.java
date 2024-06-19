@@ -5,8 +5,10 @@
 package gui;
 
 import cards.Card;
-import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
 import javax.swing.JLabel;
+import javax.swing.table.DefaultTableModel;
 import players.User;
 
 /**
@@ -17,18 +19,20 @@ public class GameWindow extends javax.swing.JFrame {
 
     private User user;
     private Card myCard;
-    private HashMap<String, Card> otherCards;
+    private TreeMap<String, Card> otherCards;
+    DefaultTableModel model;
     
     public GameWindow(User user) {
         initComponents();
         this.user = user;
+        model = (DefaultTableModel) otherCardsTable.getModel();
     }
 
     public void setMyCard(Card myCard) {
         this.myCard = myCard;
     }
 
-    public void setOtherCards(HashMap<String, Card> otherCards) {
+    public void setOtherCards(TreeMap<String, Card> otherCards) {
         this.otherCards = otherCards;
     }
 
@@ -36,6 +40,15 @@ public class GameWindow extends javax.swing.JFrame {
         return lastCardLabel;
     }
     
+    public void createTable() {
+        int nRows = model.getRowCount();
+        for (int i = 0; i < nRows; i++) {
+            model.removeRow(0);
+        }
+        for (Map.Entry<String, Card> entry : otherCards.entrySet()) {
+            model.addRow(new Object[]{entry.getKey()});
+        }
+    }
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -47,7 +60,7 @@ public class GameWindow extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        otherCardsTable = new javax.swing.JTable();
         viewOtherCardsButton = new javax.swing.JButton();
         viewMyCardButton = new javax.swing.JButton();
         takeCardButton = new javax.swing.JButton();
@@ -56,8 +69,8 @@ public class GameWindow extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jTable1.setFont(new java.awt.Font("Bahnschrift", 0, 18)); // NOI18N
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        otherCardsTable.setFont(new java.awt.Font("Bahnschrift", 0, 18)); // NOI18N
+        otherCardsTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -73,7 +86,9 @@ public class GameWindow extends javax.swing.JFrame {
                 return types [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        otherCardsTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        otherCardsTable.setRowHeight(30);
+        jScrollPane1.setViewportView(otherCardsTable);
 
         viewOtherCardsButton.setBackground(new java.awt.Color(252, 252, 252));
         viewOtherCardsButton.setFont(new java.awt.Font("Bahnschrift", 0, 18)); // NOI18N
@@ -91,10 +106,20 @@ public class GameWindow extends javax.swing.JFrame {
         takeCardButton.setBackground(new java.awt.Color(252, 252, 252));
         takeCardButton.setFont(new java.awt.Font("Bahnschrift", 0, 18)); // NOI18N
         takeCardButton.setText("Взять карту");
+        takeCardButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                takeCardButtonActionPerformed(evt);
+            }
+        });
 
         refuseButton.setBackground(new java.awt.Color(252, 252, 252));
         refuseButton.setFont(new java.awt.Font("Bahnschrift", 0, 18)); // NOI18N
         refuseButton.setText("Отказаться");
+        refuseButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                refuseButtonActionPerformed(evt);
+            }
+        });
 
         lastCardLabel.setFont(new java.awt.Font("Bahnschrift", 0, 18)); // NOI18N
         lastCardLabel.setText("Вы взяли карту - ");
@@ -140,6 +165,30 @@ public class GameWindow extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_viewMyCardButtonActionPerformed
 
+    private void refuseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refuseButtonActionPerformed
+        setVisible(false);
+        user.getGame().endGame();
+    }//GEN-LAST:event_refuseButtonActionPerformed
+
+    private void takeCardButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_takeCardButtonActionPerformed
+        user.takeCard(myCard);
+        lastCardLabel.setText("Вы взяли карту - " + myCard.getName());
+        myCard = user.getBanker().dealCard();
+        if (user.countPoints() == 21) {
+            user.setVictories(user.getVictories() + 1);
+            user.setWinMoney();
+            user.winStartWindow();
+            user.clearCards();
+            setVisible(false);
+        } else if (user.countPoints() > 21) {
+            user.setDefeats(user.getDefeats() + 1);
+            user.setMoney(user.getMoney() - 10);
+            user.loseStartWindow();
+            user.clearCards();
+            setVisible(false);
+        }
+    }//GEN-LAST:event_takeCardButtonActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -171,8 +220,8 @@ public class GameWindow extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JLabel lastCardLabel;
+    private javax.swing.JTable otherCardsTable;
     private javax.swing.JButton refuseButton;
     private javax.swing.JButton takeCardButton;
     private javax.swing.JButton viewMyCardButton;
