@@ -21,7 +21,7 @@ public class GameWindow extends javax.swing.JFrame {
     private Card myCard;
     private TreeMap<String, Card> otherCards;
     DefaultTableModel model;
-    
+
     public GameWindow(User user) {
         initComponents();
         this.user = user;
@@ -40,7 +40,7 @@ public class GameWindow extends javax.swing.JFrame {
     public JLabel getLastCardLabel() {
         return lastCardLabel;
     }
-    
+
     public void createTable() {
         int nRows = model.getRowCount();
         for (int i = 0; i < nRows; i++) {
@@ -50,7 +50,7 @@ public class GameWindow extends javax.swing.JFrame {
             model.addRow(new Object[]{entry.getKey()});
         }
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -132,6 +132,11 @@ public class GameWindow extends javax.swing.JFrame {
         viewOtherCardsButton.setBackground(new java.awt.Color(252, 252, 252));
         viewOtherCardsButton.setFont(new java.awt.Font("Bahnschrift", 0, 18)); // NOI18N
         viewOtherCardsButton.setText("Посмотреть чужую карту");
+        viewOtherCardsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                viewOtherCardsButtonActionPerformed(evt);
+            }
+        });
 
         viewMyCardButton.setBackground(new java.awt.Color(252, 252, 252));
         viewMyCardButton.setFont(new java.awt.Font("Bahnschrift", 0, 18)); // NOI18N
@@ -232,6 +237,15 @@ public class GameWindow extends javax.swing.JFrame {
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
         gammaDetectorWindow.setVisible(false);
     }//GEN-LAST:event_okButtonActionPerformed
+
+    private void viewOtherCardsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewOtherCardsButtonActionPerformed
+        if (otherCardsTable.getSelectedRow() != -1) {
+            String name = (String) otherCardsTable.getValueAt(otherCardsTable.getSelectedRow(), otherCardsTable.getSelectedColumn());
+            Card card = otherCards.get(name);
+            gammaDetectorLabel.setText(user.detect(card));
+            gammaDetectorWindow.setVisible(true);
+        }
+    }//GEN-LAST:event_viewOtherCardsButtonActionPerformed
 
     /**
      * @param args the command line arguments
