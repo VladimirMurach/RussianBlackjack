@@ -63,6 +63,7 @@ public class GameWindow extends javax.swing.JFrame {
         gammaDetectorWindow = new javax.swing.JDialog();
         gammaDetectorLabel = new javax.swing.JLabel();
         okButton = new javax.swing.JButton();
+        recommendationLabel = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         otherCardsTable = new javax.swing.JTable();
         viewOtherCardsButton = new javax.swing.JButton();
@@ -83,26 +84,36 @@ public class GameWindow extends javax.swing.JFrame {
             }
         });
 
+        recommendationLabel.setFont(new java.awt.Font("Bahnschrift", 0, 18)); // NOI18N
+        recommendationLabel.setText("Рекомендация");
+
         javax.swing.GroupLayout gammaDetectorWindowLayout = new javax.swing.GroupLayout(gammaDetectorWindow.getContentPane());
         gammaDetectorWindow.getContentPane().setLayout(gammaDetectorWindowLayout);
         gammaDetectorWindowLayout.setHorizontalGroup(
             gammaDetectorWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, gammaDetectorWindowLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
             .addGroup(gammaDetectorWindowLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(gammaDetectorLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 450, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(44, Short.MAX_VALUE))
+                .addGroup(gammaDetectorWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, gammaDetectorWindowLayout.createSequentialGroup()
+                        .addComponent(recommendationLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(gammaDetectorWindowLayout.createSequentialGroup()
+                        .addComponent(gammaDetectorLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 450, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 38, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         gammaDetectorWindowLayout.setVerticalGroup(
             gammaDetectorWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(gammaDetectorWindowLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(gammaDetectorLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(okButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(gammaDetectorWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(okButton, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
+                    .addGroup(gammaDetectorWindowLayout.createSequentialGroup()
+                        .addComponent(recommendationLabel)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -207,6 +218,7 @@ public class GameWindow extends javax.swing.JFrame {
 
     private void viewMyCardButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewMyCardButtonActionPerformed
         gammaDetectorLabel.setText(user.detect(myCard));
+        recommendationLabel.setText(user.getRecommendation(myCard));
         gammaDetectorWindow.setVisible(true);
     }//GEN-LAST:event_viewMyCardButtonActionPerformed
 
@@ -243,6 +255,7 @@ public class GameWindow extends javax.swing.JFrame {
             String name = (String) otherCardsTable.getValueAt(otherCardsTable.getSelectedRow(), otherCardsTable.getSelectedColumn());
             Card card = otherCards.get(name);
             gammaDetectorLabel.setText(user.detect(card));
+            recommendationLabel.setText("");
             gammaDetectorWindow.setVisible(true);
         }
     }//GEN-LAST:event_viewOtherCardsButtonActionPerformed
@@ -283,6 +296,7 @@ public class GameWindow extends javax.swing.JFrame {
     private javax.swing.JLabel lastCardLabel;
     private javax.swing.JButton okButton;
     private javax.swing.JTable otherCardsTable;
+    private javax.swing.JLabel recommendationLabel;
     private javax.swing.JButton refuseButton;
     private javax.swing.JButton takeCardButton;
     private javax.swing.JButton viewMyCardButton;
