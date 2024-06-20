@@ -26,6 +26,7 @@ public class GameWindow extends javax.swing.JFrame {
         initComponents();
         this.user = user;
         model = (DefaultTableModel) otherCardsTable.getModel();
+        gammaDetectorWindow.setSize(500, 150);
     }
 
     public void setMyCard(Card myCard) {
@@ -59,6 +60,9 @@ public class GameWindow extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        gammaDetectorWindow = new javax.swing.JDialog();
+        gammaDetectorLabel = new javax.swing.JLabel();
+        okButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         otherCardsTable = new javax.swing.JTable();
         viewOtherCardsButton = new javax.swing.JButton();
@@ -66,6 +70,41 @@ public class GameWindow extends javax.swing.JFrame {
         takeCardButton = new javax.swing.JButton();
         refuseButton = new javax.swing.JButton();
         lastCardLabel = new javax.swing.JLabel();
+
+        gammaDetectorLabel.setFont(new java.awt.Font("Bahnschrift", 0, 18)); // NOI18N
+        gammaDetectorLabel.setText("Гамма-детектор");
+
+        okButton.setBackground(new java.awt.Color(252, 252, 252));
+        okButton.setFont(new java.awt.Font("Bahnschrift", 0, 14)); // NOI18N
+        okButton.setText("Ок");
+        okButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                okButtonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout gammaDetectorWindowLayout = new javax.swing.GroupLayout(gammaDetectorWindow.getContentPane());
+        gammaDetectorWindow.getContentPane().setLayout(gammaDetectorWindowLayout);
+        gammaDetectorWindowLayout.setHorizontalGroup(
+            gammaDetectorWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, gammaDetectorWindowLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+            .addGroup(gammaDetectorWindowLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(gammaDetectorLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 450, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(44, Short.MAX_VALUE))
+        );
+        gammaDetectorWindowLayout.setVerticalGroup(
+            gammaDetectorWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(gammaDetectorWindowLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(gammaDetectorLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(okButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -162,7 +201,8 @@ public class GameWindow extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void viewMyCardButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewMyCardButtonActionPerformed
-        // TODO add your handling code here:
+        gammaDetectorLabel.setText(user.detect(myCard));
+        gammaDetectorWindow.setVisible(true);
     }//GEN-LAST:event_viewMyCardButtonActionPerformed
 
     private void refuseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refuseButtonActionPerformed
@@ -188,6 +228,10 @@ public class GameWindow extends javax.swing.JFrame {
             setVisible(false);
         }
     }//GEN-LAST:event_takeCardButtonActionPerformed
+
+    private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
+        gammaDetectorWindow.setVisible(false);
+    }//GEN-LAST:event_okButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -219,8 +263,11 @@ public class GameWindow extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel gammaDetectorLabel;
+    private javax.swing.JDialog gammaDetectorWindow;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lastCardLabel;
+    private javax.swing.JButton okButton;
     private javax.swing.JTable otherCardsTable;
     private javax.swing.JButton refuseButton;
     private javax.swing.JButton takeCardButton;
