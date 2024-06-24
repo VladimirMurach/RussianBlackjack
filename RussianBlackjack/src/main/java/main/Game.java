@@ -1,6 +1,7 @@
 package main;
 
 import cards.Card;
+import cards.Deck;
 import cards.Isotope;
 import gui.ChangeDeckForm;
 import gui.Menu;
@@ -24,6 +25,7 @@ public class Game {
     private XlsxWriter writer;
     private ArrayList<Isotope> isotopes;
     private ArrayList<Card> deck;
+    private ArrayList<Deck> decks;
     private StartWindow startWindow;
     private boolean gameOver;
 
@@ -31,6 +33,7 @@ public class Game {
         reader = new XlsxReader();
         writer = new XlsxWriter();
         deck = new ArrayList<>();
+        decks = new ArrayList<>();
         banker = new Banker();
         user = new User(0, 0, 100, this, banker);
         startWindow = new StartWindow(menu, this);
