@@ -37,7 +37,7 @@ public class Game {
         startWindow = new StartWindow(menu, this);
         readUser();
         readIsotopes();
-        readDeck();
+        readDecks();
     }
 
     public ArrayList<Isotope> getIsotopes() {
@@ -53,8 +53,8 @@ public class Game {
     }
 
 
-    public void readDeck() {
-        deck = reader.readDeck(isotopes, deck);
+    public void readDecks() {
+        reader.readDecks(isotopes, decks);
     }
 
     public void saveDecks() {

@@ -1,10 +1,10 @@
 package main;
 
 import cards.Card;
+import cards.Deck;
 import cards.Isotope;
 import java.io.IOException;
 import java.util.ArrayList;
-import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -12,18 +12,24 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class XlsxReader {
 
-    public ArrayList<Card> readDeck(ArrayList<Isotope> isotopes, ArrayList<Card> deck) {
+    public void readDecks(ArrayList<Isotope> isotopes, ArrayList<Deck> decks) {
         Workbook workbook = null;
         try {
             workbook = new XSSFWorkbook("deck.xlsx");
             Sheet sheet = workbook.getSheetAt(0);
-            int j = 0;
             for (Row row : sheet) {
-                Isotope isotope = isotopes.get(Integer.parseInt(row.getCell(0).getStringCellValue()));
-                for (int i = j; i < 4 + j; i++) {
-                    deck.get(i).setIsotope(isotope);
+                Deck deck = new Deck();
+                deck.setName(row.getCell(0).getStringCellValue());
+                deck.setCreationDate(row.getCell(1).getDateCellValue());
+                ArrayList<Card> cards = createDeck();
+                for (int i = 0; i < 9; i++) {
+                    Isotope isotope = isotopes.get(Integer.parseInt(row.getCell(2 + i).getStringCellValue()));
+                    for (int j = i * 4; j < 4 + i * 4; j++) {
+                        cards.get(j).setIsotope(isotope);
+                    }
                 }
-                j += 4;
+                deck.setCards(cards);
+                decks.add(deck);
             }
         } catch (IOException e) {
 
@@ -34,7 +40,6 @@ public class XlsxReader {
 
             }
         }
-        return deck;
     }
 
     public ArrayList<Isotope> readIsotopes() {
@@ -82,5 +87,25 @@ public class XlsxReader {
             }
         }
         return userInfo;
+    }
+
+    public ArrayList<Card> createDeck() {
+        ArrayList<Card> deck = new ArrayList<>();
+        ArrayList<Card> cards = new ArrayList<>();
+        cards.add(new Card("Шесть", 6, null));
+        cards.add(new Card("Семь", 7, null));
+        cards.add(new Card("Восемь", 8, null));
+        cards.add(new Card("Девять", 9, null));
+        cards.add(new Card("Десять", 10, null));
+        cards.add(new Card("Валет", 2, null));
+        cards.add(new Card("Дама", 3, null));
+        cards.add(new Card("Король", 4, null));
+        cards.add(new Card("Туз", 11, null));
+        for (Card card : cards) {
+            for (int i = 0; i < 4; i++) {
+                deck.add(card);
+            }
+        }
+        return deck;
     }
 }
