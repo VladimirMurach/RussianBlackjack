@@ -4,6 +4,10 @@
  */
 package gui;
 
+import cards.Deck;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
 import main.Game;
 
 /**
@@ -13,7 +17,8 @@ import main.Game;
 public class Menu extends javax.swing.JFrame {
 
     private final Game game;
-    
+    DefaultTableModel model;
+
     public Menu() {
         initComponents();
         game = new Game(this);
@@ -24,6 +29,21 @@ public class Menu extends javax.swing.JFrame {
         opponentsButtonGroup.add(threeRadioButton);
         opponentsButtonGroup.add(fourRadioButton);
         zeroRadioButton.setSelected(true);
+        model = (DefaultTableModel) decksTable.getModel();
+        chooseDeckWindow.setSize(400, 440);
+        warningWindow.setSize(400, 160);
+    }
+
+    public void createTable() {
+        int nRows = model.getRowCount();
+        for (int i = 0; i < nRows; i++) {
+            model.removeRow(0);
+        }
+        ArrayList<Deck> decks = game.getDecks();
+        SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
+        for (Deck deck : decks) {
+            model.addRow(new Object[]{deck.getName(), formatter.format(deck.getCreationDate())});
+        }
     }
 
     /**
@@ -44,6 +64,16 @@ public class Menu extends javax.swing.JFrame {
         fourRadioButton = new javax.swing.JRadioButton();
         confirmButton = new javax.swing.JButton();
         opponentsButtonGroup = new javax.swing.ButtonGroup();
+        chooseDeckWindow = new javax.swing.JDialog();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        decksTable = new javax.swing.JTable();
+        chooseDeckLabel = new javax.swing.JLabel();
+        chooseDeckButton = new javax.swing.JButton();
+        warningWindow = new javax.swing.JDialog();
+        firstLabel = new javax.swing.JLabel();
+        secondLabel = new javax.swing.JLabel();
+        chooseAnotherDeckLabel = new javax.swing.JLabel();
+        okButton = new javax.swing.JButton();
         titleLabel = new javax.swing.JLabel();
         startButton = new javax.swing.JButton();
         addDeckButton = new javax.swing.JButton();
@@ -146,6 +176,111 @@ public class Menu extends javax.swing.JFrame {
                 .addGroup(chooseOpponentsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(fourRadioButton)
                     .addComponent(confirmButton))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        decksTable.setFont(new java.awt.Font("Bahnschrift", 0, 18)); // NOI18N
+        decksTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Название", "Дата создания"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        decksTable.setRowHeight(30);
+        jScrollPane1.setViewportView(decksTable);
+
+        chooseDeckLabel.setFont(new java.awt.Font("Bahnschrift", 0, 24)); // NOI18N
+        chooseDeckLabel.setText("Выберите колоду");
+
+        chooseDeckButton.setBackground(new java.awt.Color(252, 252, 252));
+        chooseDeckButton.setFont(new java.awt.Font("Bahnschrift", 0, 18)); // NOI18N
+        chooseDeckButton.setText("Выбрать");
+        chooseDeckButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chooseDeckButtonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout chooseDeckWindowLayout = new javax.swing.GroupLayout(chooseDeckWindow.getContentPane());
+        chooseDeckWindow.getContentPane().setLayout(chooseDeckWindowLayout);
+        chooseDeckWindowLayout.setHorizontalGroup(
+            chooseDeckWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+            .addGroup(chooseDeckWindowLayout.createSequentialGroup()
+                .addGap(100, 100, 100)
+                .addComponent(chooseDeckLabel)
+                .addContainerGap(104, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, chooseDeckWindowLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(chooseDeckButton)
+                .addContainerGap())
+        );
+        chooseDeckWindowLayout.setVerticalGroup(
+            chooseDeckWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(chooseDeckWindowLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(chooseDeckLabel)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
+                .addComponent(chooseDeckButton)
+                .addContainerGap())
+        );
+
+        firstLabel.setFont(new java.awt.Font("Bahnschrift", 0, 18)); // NOI18N
+        firstLabel.setText("Самый короткоживущий изотоп");
+
+        secondLabel.setFont(new java.awt.Font("Bahnschrift", 0, 18)); // NOI18N
+        secondLabel.setText("достиг половины периода полураспада!");
+
+        chooseAnotherDeckLabel.setFont(new java.awt.Font("Bahnschrift", 0, 18)); // NOI18N
+        chooseAnotherDeckLabel.setText("Выберите другую колоду!");
+
+        okButton.setBackground(new java.awt.Color(252, 252, 252));
+        okButton.setFont(new java.awt.Font("Bahnschrift", 0, 18)); // NOI18N
+        okButton.setText("Ок");
+        okButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                okButtonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout warningWindowLayout = new javax.swing.GroupLayout(warningWindow.getContentPane());
+        warningWindow.getContentPane().setLayout(warningWindowLayout);
+        warningWindowLayout.setHorizontalGroup(
+            warningWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(warningWindowLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(warningWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(firstLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(secondLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(warningWindowLayout.createSequentialGroup()
+                        .addComponent(chooseAnotherDeckLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(okButton)))
+                .addContainerGap())
+        );
+        warningWindowLayout.setVerticalGroup(
+            warningWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(warningWindowLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(firstLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(secondLabel)
+                .addGap(18, 18, 18)
+                .addGroup(warningWindowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(chooseAnotherDeckLabel)
+                    .addComponent(okButton))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -276,20 +411,55 @@ public class Menu extends javax.swing.JFrame {
     private void confirmButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmButtonActionPerformed
         chooseOpponents.setVisible(false);
         int number = 0;
-        if (zeroRadioButton.isSelected()){
+        if (zeroRadioButton.isSelected()) {
             number = 0;
-        } else if (oneRadioButton.isSelected()){
+        } else if (oneRadioButton.isSelected()) {
             number = 1;
-        } else if (twoRadioButton.isSelected()){
+        } else if (twoRadioButton.isSelected()) {
             number = 2;
-        } else if (threeRadioButton.isSelected()){
+        } else if (threeRadioButton.isSelected()) {
             number = 3;
-        } else if (fourRadioButton.isSelected()){
+        } else if (fourRadioButton.isSelected()) {
             number = 4;
         }
         game.setOpponents(number);
-        game.start();
+        createTable();
+        chooseDeckWindow.setVisible(true);
     }//GEN-LAST:event_confirmButtonActionPerformed
+
+    private void chooseDeckButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chooseDeckButtonActionPerformed
+        if (decksTable.getSelectedRow() != -1) {
+            Deck deck = game.getDecks().get(decksTable.getSelectedRow());
+            switch (deck.canPlay()) {
+                case 0 -> {
+                    game.setCurrentDeck(deck.getCards());
+                    chooseDeckWindow.setVisible(false);
+                    game.start();
+                    
+                }
+                case 1 -> {
+                    game.setCurrentDeck(deck.getCards());
+                    chooseDeckWindow.setVisible(false);
+                    game.start();
+                    secondLabel.setText("достиг половины периода полураспада!");
+                    chooseAnotherDeckLabel.setText("");
+                    warningWindow.setVisible(true);
+                }
+                case 2 -> {
+                    secondLabel.setText("достиг периода полураспада!");
+                    chooseAnotherDeckLabel.setText("Выберите другую колоду!");
+                    warningWindow.setVisible(true);
+                }
+                default -> {
+
+                }
+            }
+        }
+    }//GEN-LAST:event_chooseDeckButtonActionPerformed
+
+    private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
+        warningWindow.setVisible(false);
+    }//GEN-LAST:event_okButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -328,20 +498,30 @@ public class Menu extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addDeckButton;
+    private javax.swing.JLabel chooseAnotherDeckLabel;
+    private javax.swing.JButton chooseDeckButton;
+    private javax.swing.JLabel chooseDeckLabel;
+    private javax.swing.JDialog chooseDeckWindow;
     private javax.swing.JDialog chooseOpponents;
     private javax.swing.JLabel chooseOpponentsLabel;
     private javax.swing.JButton confirmButton;
+    private javax.swing.JTable decksTable;
     private javax.swing.JLabel defeatsLabel;
     private javax.swing.JButton exitButton;
+    private javax.swing.JLabel firstLabel;
     private javax.swing.JRadioButton fourRadioButton;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel moneyLabel;
+    private javax.swing.JButton okButton;
     private javax.swing.JRadioButton oneRadioButton;
     private javax.swing.ButtonGroup opponentsButtonGroup;
+    private javax.swing.JLabel secondLabel;
     private javax.swing.JButton startButton;
     private javax.swing.JRadioButton threeRadioButton;
     private javax.swing.JLabel titleLabel;
     private javax.swing.JRadioButton twoRadioButton;
     private javax.swing.JLabel victoriesLabel;
+    private javax.swing.JDialog warningWindow;
     private javax.swing.JRadioButton zeroRadioButton;
     // End of variables declaration//GEN-END:variables
 

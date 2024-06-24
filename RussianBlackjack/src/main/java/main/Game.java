@@ -25,6 +25,7 @@ public class Game {
     private XlsxWriter writer;
     private ArrayList<Isotope> isotopes;
     private ArrayList<Deck> decks;
+    private ArrayList<Card> currentDeck;
     private StartWindow startWindow;
     private boolean gameOver;
 
@@ -38,6 +39,10 @@ public class Game {
         readUser();
         readIsotopes();
         readDecks();
+    }
+
+    public void setCurrentDeck(ArrayList<Card> currentDeck) {
+        this.currentDeck = currentDeck;
     }
 
     public ArrayList<Isotope> getIsotopes() {
@@ -69,7 +74,7 @@ public class Game {
     public void startRound() {
         gameOver = false;
         setPlayers();
-        banker.setDeck(new ArrayList<>(deck));
+        banker.setDeck(new ArrayList<>(currentDeck));
         banker.shuffleDeck();
         Collections.shuffle(players);
         int i = 0;

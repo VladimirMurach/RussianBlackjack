@@ -20,6 +20,7 @@ public class AddDeckForm extends javax.swing.JFrame {
         this.game = game;
         this.isotopes = isotopes;
         this.decks = decks;
+        currentDeck = new ArrayList<>();
         setDeck();
         createTables();
     }
