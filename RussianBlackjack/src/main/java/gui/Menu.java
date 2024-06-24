@@ -46,7 +46,7 @@ public class Menu extends javax.swing.JFrame {
         opponentsButtonGroup = new javax.swing.ButtonGroup();
         titleLabel = new javax.swing.JLabel();
         startButton = new javax.swing.JButton();
-        changeDeckButton = new javax.swing.JButton();
+        addDeckButton = new javax.swing.JButton();
         exitButton = new javax.swing.JButton();
         victoriesLabel = new javax.swing.JLabel();
         defeatsLabel = new javax.swing.JLabel();
@@ -163,12 +163,12 @@ public class Menu extends javax.swing.JFrame {
             }
         });
 
-        changeDeckButton.setBackground(new java.awt.Color(229, 229, 229));
-        changeDeckButton.setFont(new java.awt.Font("Bahnschrift", 0, 18)); // NOI18N
-        changeDeckButton.setText("Изменить колоду");
-        changeDeckButton.addActionListener(new java.awt.event.ActionListener() {
+        addDeckButton.setBackground(new java.awt.Color(229, 229, 229));
+        addDeckButton.setFont(new java.awt.Font("Bahnschrift", 0, 18)); // NOI18N
+        addDeckButton.setText("Добавить колоду");
+        addDeckButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                changeDeckButtonActionPerformed(evt);
+                addDeckButtonActionPerformed(evt);
             }
         });
 
@@ -207,7 +207,7 @@ public class Menu extends javax.swing.JFrame {
                                 .addGap(113, 113, 113)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(exitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(changeDeckButton, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(addDeckButton, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(startButton, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(titleLabel)))
                             .addGroup(layout.createSequentialGroup()
@@ -230,7 +230,7 @@ public class Menu extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
                 .addComponent(startButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(changeDeckButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(addDeckButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(exitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -244,9 +244,9 @@ public class Menu extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_exitButtonActionPerformed
 
-    private void changeDeckButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeDeckButtonActionPerformed
-        game.changeDeck();
-    }//GEN-LAST:event_changeDeckButtonActionPerformed
+    private void addDeckButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addDeckButtonActionPerformed
+        game.addDeck();
+    }//GEN-LAST:event_addDeckButtonActionPerformed
 
     private void startButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startButtonActionPerformed
         chooseOpponents.setSize(230, 160);
@@ -327,7 +327,7 @@ public class Menu extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton changeDeckButton;
+    private javax.swing.JButton addDeckButton;
     private javax.swing.JDialog chooseOpponents;
     private javax.swing.JLabel chooseOpponentsLabel;
     private javax.swing.JButton confirmButton;

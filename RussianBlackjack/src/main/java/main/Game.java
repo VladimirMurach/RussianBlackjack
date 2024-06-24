@@ -3,7 +3,7 @@ package main;
 import cards.Card;
 import cards.Deck;
 import cards.Isotope;
-import gui.ChangeDeckForm;
+import gui.AddDeckForm;
 import gui.Menu;
 import gui.StartWindow;
 import java.util.ArrayList;
@@ -24,7 +24,6 @@ public class Game {
     private XlsxReader reader;
     private XlsxWriter writer;
     private ArrayList<Isotope> isotopes;
-    private ArrayList<Card> deck;
     private ArrayList<Deck> decks;
     private StartWindow startWindow;
     private boolean gameOver;
@@ -32,14 +31,12 @@ public class Game {
     public Game(Menu menu) {
         reader = new XlsxReader();
         writer = new XlsxWriter();
-        deck = new ArrayList<>();
         decks = new ArrayList<>();
         banker = new Banker();
         user = new User(0, 0, 100, this, banker);
         startWindow = new StartWindow(menu, this);
         readUser();
         readIsotopes();
-        setDeck();
         readDeck();
     }
 
@@ -47,38 +44,21 @@ public class Game {
         return isotopes;
     }
 
-    public ArrayList<Card> getDeck() {
-        return deck;
+    public ArrayList<Deck> getDecks() {
+        return decks;
     }
 
     public void readIsotopes() {
         isotopes = reader.readIsotopes();
     }
 
-    public void setDeck() {
-        ArrayList<Card> cards = new ArrayList<>();
-        cards.add(new Card("Шесть", 6, null));
-        cards.add(new Card("Семь", 7, null));
-        cards.add(new Card("Восемь", 8, null));
-        cards.add(new Card("Девять", 9, null));
-        cards.add(new Card("Десять", 10, null));
-        cards.add(new Card("Валет", 2, null));
-        cards.add(new Card("Дама", 3, null));
-        cards.add(new Card("Король", 4, null));
-        cards.add(new Card("Туз", 11, null));
-        for (Card card : cards) {
-            for (int i = 0; i < 4; i++) {
-                deck.add(card);
-            }
-        }
-    }
 
     public void readDeck() {
         deck = reader.readDeck(isotopes, deck);
     }
 
-    public void saveDeck() {
-        writer.writeDeck(deck);
+    public void saveDecks() {
+        writer.writeDecks(decks);
     }
 
     public void start() {
@@ -120,9 +100,9 @@ public class Game {
         players.add(user);
     }
 
-    public void changeDeck() {
-        ChangeDeckForm changeDeckForm = new ChangeDeckForm(this, isotopes, deck);
-        changeDeckForm.setVisible(true);
+    public void addDeck() {
+        AddDeckForm addDeckForm = new AddDeckForm(this, isotopes, decks);
+        addDeckForm.setVisible(true);
     }
 
     public void setOpponents(int number) {

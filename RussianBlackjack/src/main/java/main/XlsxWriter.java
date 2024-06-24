@@ -1,6 +1,7 @@
 package main;
 
 import cards.Card;
+import cards.Deck;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -12,12 +13,18 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class XlsxWriter {
 
-    public void writeDeck(ArrayList<Card> deck) {
+    public void writeDecks(ArrayList<Deck> decks) {
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("Лист1");
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < decks.size(); i++) {
+            Deck deck = decks.get(i);
             Row row = sheet.createRow(i);
-            row.createCell(0).setCellValue(Integer.toString(deck.get(i * 4).getIsotope().getNumber()));
+            row.createCell(0).setCellValue(deck.getName());
+            row.createCell(1).setCellValue(deck.getCreationDate());
+            ArrayList<Card> cards = deck.getCards();
+            for (int j = 0; j < 9; j++) {
+                row.createCell(2+j).setCellValue(Integer.toString(cards.get(j * 4).getIsotope().getNumber()));
+            }
         }
         FileOutputStream fos;
         try {

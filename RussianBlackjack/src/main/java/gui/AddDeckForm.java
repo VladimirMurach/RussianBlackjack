@@ -1,22 +1,26 @@
 package gui;
 
 import cards.Card;
+import cards.Deck;
 import cards.Isotope;
 import java.util.ArrayList;
+import java.util.Date;
 import javax.swing.table.DefaultTableModel;
 import main.Game;
 
-public class ChangeDeckForm extends javax.swing.JFrame {
+public class AddDeckForm extends javax.swing.JFrame {
 
     private final Game game;
     private ArrayList<Isotope> isotopes;
-    private ArrayList<Card> deck;
+    private ArrayList<Card> currentDeck;
+    private ArrayList<Deck> decks;
 
-    public ChangeDeckForm(Game game, ArrayList<Isotope> isotopes, ArrayList<Card> deck) {
+    public AddDeckForm(Game game, ArrayList<Isotope> isotopes, ArrayList<Deck> decks) {
         initComponents();
         this.game = game;
-        this.deck = deck;
         this.isotopes = isotopes;
+        this.decks = decks;
+        setDeck();
         createTables();
     }
 
@@ -35,6 +39,8 @@ public class ChangeDeckForm extends javax.swing.JFrame {
         isotopesTable = new javax.swing.JTable();
         markButton = new javax.swing.JButton();
         saveButton = new javax.swing.JButton();
+        nameTextField = new javax.swing.JTextField();
+        nameLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -112,6 +118,12 @@ public class ChangeDeckForm extends javax.swing.JFrame {
             }
         });
 
+        nameTextField.setFont(new java.awt.Font("Bahnschrift", 0, 14)); // NOI18N
+        nameTextField.setText("Название");
+
+        nameLabel.setFont(new java.awt.Font("Bahnschrift", 0, 14)); // NOI18N
+        nameLabel.setText("Введите название:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -120,26 +132,36 @@ public class ChangeDeckForm extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(scrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(24, 24, 24)
-                        .addComponent(saveButton))
+                        .addGap(50, 50, 50)
+                        .addComponent(markButton, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(44, 44, 44)
-                        .addComponent(markButton, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(24, 24, 24)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(saveButton)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(nameTextField, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(nameLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(scrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(scrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 345, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(scrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 345, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 9, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(scrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(markButton, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(nameLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(nameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(saveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
@@ -150,7 +172,12 @@ public class ChangeDeckForm extends javax.swing.JFrame {
     }//GEN-LAST:event_markButtonActionPerformed
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-        game.saveDeck();
+        Deck deck = new Deck();
+        deck.setCards(currentDeck);
+        deck.setName(nameTextField.getText());
+        deck.setCreationDate(new Date());
+        decks.add(deck);
+        game.saveDecks();
         this.setVisible(false);
     }//GEN-LAST:event_saveButtonActionPerformed
 
@@ -171,14 +198,15 @@ public class ChangeDeckForm extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ChangeDeckForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AddDeckForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ChangeDeckForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AddDeckForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ChangeDeckForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AddDeckForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ChangeDeckForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AddDeckForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
     }
@@ -187,6 +215,8 @@ public class ChangeDeckForm extends javax.swing.JFrame {
     private javax.swing.JTable cardsTable;
     private javax.swing.JTable isotopesTable;
     private javax.swing.JButton markButton;
+    private javax.swing.JLabel nameLabel;
+    private javax.swing.JTextField nameTextField;
     private javax.swing.JButton saveButton;
     private javax.swing.JScrollPane scrollPane1;
     private javax.swing.JScrollPane scrollPane2;
@@ -199,7 +229,7 @@ public class ChangeDeckForm extends javax.swing.JFrame {
         }
         model = (DefaultTableModel) cardsTable.getModel();
         for (int i = 0; i < 9; i++) {
-            model.addRow(new Object[]{deck.get(i * 4).getName()});
+            model.addRow(new Object[]{currentDeck.get(i * 4).getName()});
         }
     }
 
@@ -208,10 +238,28 @@ public class ChangeDeckForm extends javax.swing.JFrame {
         int isotopeNumber = isotopesTable.getSelectedRow();
         if (cardNumber != -1 & isotopeNumber != -1) {
             for (int i = cardNumber * 4; i < cardNumber * 4 + 4; i++) {
-                deck.get(i).setIsotope(isotopes.get(isotopeNumber));
+                currentDeck.get(i).setIsotope(isotopes.get(isotopeNumber));
             }
         } else {
             System.out.println("Выберите карту и изотоп!");
+        }
+    }
+
+    public void setDeck() {
+        ArrayList<Card> cards = new ArrayList<>();
+        cards.add(new Card("Шесть", 6, isotopes.get(0)));
+        cards.add(new Card("Семь", 7, isotopes.get(1)));
+        cards.add(new Card("Восемь", 8, isotopes.get(2)));
+        cards.add(new Card("Девять", 9, isotopes.get(3)));
+        cards.add(new Card("Десять", 10, isotopes.get(4)));
+        cards.add(new Card("Валет", 2, isotopes.get(5)));
+        cards.add(new Card("Дама", 3, isotopes.get(6)));
+        cards.add(new Card("Король", 4, isotopes.get(7)));
+        cards.add(new Card("Туз", 11, isotopes.get(8)));
+        for (Card card : cards) {
+            for (int i = 0; i < 4; i++) {
+                currentDeck.add(card);
+            }
         }
     }
 
